@@ -1,3 +1,18 @@
 /target
+**/target/
 
 *.omda
+
+/debug
+
+**/*.rs.bk
+
+.DS_Store
+Thumbs.db
+
+
+*.log
+
+.vscode/
+
+*.pdb
