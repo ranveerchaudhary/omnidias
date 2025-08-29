@@ -1,17 +1,19 @@
-
-pub struct query {
+#[derive(Debug)]
+pub struct Query {
     query_type: String,
     table: String,
     columns: Vec<String>,
-    condition: Vec<Condition>
+    condition: Option<Condition>
 }
 
+#[derive(Debug)]
 pub struct Condition {
     column: String,
     operator: Operator,
-    value: value
+    value: String
 }
 
+#[derive(Debug)]
 pub enum Operator {
     Eq,
     Lt,
@@ -29,8 +31,14 @@ pub enum Operator {
 // cl -> closet to (~) [this will be used for vectors sorta like ANN]
 // ft -> farthest to (!~) [again for vectors ANN]
 
-pub fn treebuilder(tokens: &Vec<&str>){
+pub fn treebuilder(tokens: &Vec<String>){
 
     println!("{:?}", tokens);
+
+    let mut condition_object = Some(Condition {column: String::from("emp_id"), operator: Operator::Eq, value: String::from("1")});
+
+    let mut query_object = Some(Query {query_type: String::from(&tokens[0]), table: String::from("VECokok"), columns: Vec::from([String::from("date_of_joining")]), condition: condition_object});
+
+    println!("{:#?}", query_object);
 
 }
