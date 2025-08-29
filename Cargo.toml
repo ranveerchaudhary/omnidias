@@ -1,0 +1,8 @@
+[package]
+name = "omnidias"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+regex = "1"
+hnswlib-rs = "0.2"
