@@ -35,9 +35,35 @@ pub fn treebuilder(tokens: &Vec<String>){
 
     println!("{:?}", tokens);
 
+    let mut pointer: usize = 0;
+    let query_type_value = String::from(tokens[pointer].clone());
+
+    let mut column_list: Vec<String> = Vec::new();
+
+    let mut table = String::new();
+
+    if &query_type_value == "select"{
+        pointer += 1;
+        while pointer < tokens.len() && tokens[pointer] != "from" {
+            column_list.push(tokens[pointer].trim_matches(',').clone().to_string());
+            pointer += 1;
+        }
+        
+        pointer += 1;
+        table = String::from(tokens[pointer].clone());
+
+        pointer += 1;
+        if tokens[pointer] == "where"{
+            pointer += 1
+
+        }
+
+    }
+    
+
     let mut condition_object = Some(Condition {column: String::from("emp_id"), operator: Operator::Eq, value: String::from("1")});
 
-    let mut query_object = Some(Query {query_type: String::from(&tokens[0]), table: String::from("VECokok"), columns: Vec::from([String::from("date_of_joining")]), condition: condition_object});
+    let mut query_object = Some(Query {query_type: query_type_value, table: table, columns: column_list, condition: condition_object});
 
     println!("{:#?}", query_object);
 
