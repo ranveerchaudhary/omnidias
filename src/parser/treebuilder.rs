@@ -1,9 +1,9 @@
 #[derive(Debug)]
-pub struct Query {
-    query_type: String,
+pub struct Query<'a> {
+    query_type: &'a str,
     table: String,
     columns: Vec<String>,
-    condition: Vec<Option<Condition>>
+    condition: Vec<Condition>
 }
 
 #[derive(Debug)]
@@ -35,35 +35,34 @@ pub enum Operator {
 fn get_operator(operator_sign: &str) -> Operator{
     
     match operator_sign{
-        "=" => return Operator::Eq,
-        "<" => return Operator::Lt,
-        ">" => return Operator::Gt,
-        "<>" => return Operator::Ne,
-        "!=" => return Operator::Ne,
-        "<=" => return Operator::Le,
-        ">=" => return Operator::Ge,
-        "~" => return Operator::Cl,
-        "~!" => return Operator::Ft,
-        "like" => return Operator::Lk,
+        "=" => Operator::Eq,
+        "<" => Operator::Lt,
+        ">" => Operator::Gt,
+        "<>" | "!="=> Operator::Ne,
+        "<=" => Operator::Le,
+        ">=" => Operator::Ge,
+        "~" => Operator::Cl,
+        "~!" => Operator::Ft,
+        "like" => Operator::Lk,
         _ => return panic!("Unknown operator!!"),
 
     }
 }
 
-pub fn tree_builder(tokens: &Vec<String>){
+pub fn tree_builder(tokens: &[String]) -> Option<Query>{
 
-    println!("{:?}", tokens);
+    //println!("{:?}", tokens);
 
     let mut pointer: usize = 0;
-    let query_type_value = String::from(tokens[pointer].clone());
+    let query_type_value = &tokens[pointer];
 
-    let mut column_list: Vec<String> = Vec::new();
+    let mut column_list: Vec<String> = Vec::with_capacity(500);;
 
     let mut table: String = String::new();
 
     let mut query_object: Option<Query> = None;
 
-    if &query_type_value == "select"{
+    if query_type_value == "select"{
 
         pointer += 1;
         while pointer < tokens.len() && tokens[pointer] != "from" {
@@ -81,7 +80,7 @@ pub fn tree_builder(tokens: &Vec<String>){
             pointer += 1;
 
             while pointer <= tokens.len()-2{
-                let condition = Some(Condition{object: tokens[pointer].clone(), operator: get_operator(&tokens[pointer+1]), value: tokens[pointer+2].clone()});
+                let condition = Condition{object: tokens[pointer].clone(), operator: get_operator(&tokens[pointer+1]), value: tokens[pointer+2].clone()};
                 all_conditions.push(condition);
                 pointer += 3;
 
@@ -96,6 +95,7 @@ pub fn tree_builder(tokens: &Vec<String>){
         query_object = Some(Query {query_type: query_type_value, table: table, columns: column_list, condition: all_conditions});
     }
     
-    println!("{:#?}", query_object);
+    return query_object
+    //println!("{:#?}", query_object);
 
 }
