@@ -1,6 +1,4 @@
 use std::time::Instant;
-use std::io;
-use std::fs;
 mod parser;
 
 
@@ -12,6 +10,7 @@ fn main() {
     let parsed_query = parser::treebuilder::tree_builder(&tokenized_query);
     let time_be = percont.elapsed();
     println!("{:?}", &time_be);
+    println!("{:?}", parsed_query);
     //println!("{:?}", parsed_query);
 
     // after running simualtions 
