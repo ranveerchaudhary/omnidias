@@ -1,4 +1,6 @@
 # OMNIDIAS
+Ultra-fast VectorDB written in rust 🦀
 
 <br>
-Ultra-fast VectorDB written in rust.
+<hr>
+This readme will be periodically updated.
