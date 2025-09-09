@@ -4,7 +4,7 @@ mod parser;
 
 fn main() {
     // Handle potential error
-    let query = "select * from vectable whekre vector ~ [[0.23, 0.4, 0.1]]";
+    let query = "select * from vectable where vector ~ [[0.23, 0.4, 0.1]]";
     let percont = Instant::now();
     let tokenized_query = parser::tokenizer::tokenizer(&query);
     let parsed_query = parser::treebuilder::tree_builder(&tokenized_query, String::from(query));
