@@ -1,44 +1,4 @@
-#[derive(Debug)]
-pub struct Query<'a> {
-    query_type: &'a str,
-    table: String,
-    columns: Vec<String>,
-    expression: Vec<Expression>
-}
-
-#[derive(Debug)]
-pub struct Condition {
-    object: String,
-    operator: Operator,
-    value: String,
-}
-
-#[derive(Debug)]
-pub struct Expression{
-    condition: Condition,
-    logical: Logical
-}
-
-#[derive(Debug)]
-pub enum Logical {
-    And,
-    Or,
-    End
-}
-
-#[derive(Debug)]
-pub enum Operator {
-    Eq,
-    Lt,
-    Gt,
-    Ne,
-    Le,
-    Ge,
-    Cl,
-    Ft,
-    Lk,
-    Error
-}
+use super::{Query, Condition, Expression, Logical, Operator};
 
 //so the operators defined here (custom) goes as follows
 //eq -> equals to (=) ; lt -> less than (<) ; gt -> greater than (>)
