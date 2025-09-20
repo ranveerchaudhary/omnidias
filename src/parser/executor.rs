@@ -7,6 +7,9 @@ pub fn execute(parsed_query: &Option<Query>){
                 println!("This is a select query");
                 // logic for executing the parsed query struct!
             }
+            if query.query_type == "insert"{
+                println!("This is a insert query!");
+            }
         },
         None => {
             println!("No query to execute");
