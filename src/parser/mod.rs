@@ -3,11 +3,17 @@ pub mod treebuilder;
 pub mod executor;
 
 #[derive(Debug)]
+enum EitherOrType{
+    Vec<InsertExpression>,
+    Vec<SelectExpression>
+}
+
+#[derive(Debug)]
 pub struct Query<'a> {
     pub query_type: &'a str,
     pub table: String,
     pub columns: Vec<String>,
-    pub expression: Vec<Expression>
+    pub expression: EitherOrType
 }
 
 #[derive(Debug)]
@@ -18,9 +24,14 @@ pub struct Condition {
 }
 
 #[derive(Debug)]
-pub struct Expression{
+pub struct SelectExpression{
     pub condition: Condition,
     pub logical: Logical
+}
+
+#[derive(Debug)]
+pub struct InsertExpression{
+    pub values: Vec<String>
 }
 
 #[derive(Debug)]
