@@ -1,4 +1,4 @@
-use super::{Query, Condition, Expression, Logical, Operator};
+use super::{Query, Condition, SelectExpression, InsertExpression, Logical, Operator, EitherOrType};
 
 //so the operators defined here (custom) goes as follows
 //eq -> equals to (=) ; lt -> less than (<) ; gt -> greater than (>)
@@ -95,7 +95,7 @@ pub fn tree_builder(tokens: &[String], original_query: String) -> Option<Query>{
             error_printer(pointer, &original_query, tokens, "Table doesn't exist!");
         }
 
-        let mut all_expressions = Vec::new();
+        let mut all_expressions: EitherOrType = Vec::new();
 
         pointer += 1;
 
@@ -123,13 +123,13 @@ pub fn tree_builder(tokens: &[String], original_query: String) -> Option<Query>{
                         }
 
                         else{
-                            error_printer(pointer, &original_query, tokens, "Unknown Logical Operator! (Did you mean `and/or`?)");
+                            error_printer(pointer, &original_query, tokens, "Unknown Logical Operator! (Did you mean `AND/OR`?)");
                         }
 
                         pointer += 1;
                     }
 
-                    let expression: Expression = Expression{condition: condition, logical: current_logical_operator};
+                    let expression: SelectExpression = SelectExpression{condition: condition, logical: current_logical_operator};
 
                     all_expressions.push(expression);
                 }
@@ -138,13 +138,37 @@ pub fn tree_builder(tokens: &[String], original_query: String) -> Option<Query>{
 
             else{
             
-                error_printer(pointer, &original_query, tokens, "Unknown Keyword! (Did you mean `Where`?)");
+                error_printer(pointer, &original_query, tokens, "Unknown Keyword! (Did you mean `WHERE`?)");
 
             }
         
         }
 
         query_object = Some(Query {query_type: query_type_value, table: table, columns: column_list, expression: all_expressions});
+    }
+
+    else if query_type_value == "insert"{
+
+        pointer += 1;
+
+        if tokens[pointer] == "into"{
+
+            pointer += 1;
+
+            if is_table(&tokens[pointer]){
+
+            }
+            else{
+                error_printer(pointer, &original_query, tokens, "Table doesn't exist!");
+            }
+
+        }
+        else{
+            error_printer(pointer, &original_query, tokens, "Unknown Keyword! (Did you mean `INTO`?)");
+        }
+
+
+
     }
     
     return query_object
