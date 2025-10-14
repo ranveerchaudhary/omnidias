@@ -4,8 +4,8 @@ pub mod executor;
 
 #[derive(Debug)]
 enum EitherOrType{
-    Vec<InsertExpression>,
-    Vec<SelectExpression>
+    Select(Vec<SelectExpression>),
+    Insert(Vec<InsertExpression>)
 }
 
 #[derive(Debug)]
