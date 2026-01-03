@@ -95,7 +95,7 @@ pub fn tree_builder(tokens: &[String], original_query: String) -> Option<Query>{
             error_printer(pointer, &original_query, tokens, "Table doesn't exist!");
         }
 
-        let mut all_expressions: EitherOrType = Vec::new();
+        let mut all_expressions = EitherOrType::Select(Vec::new());
 
         pointer += 1;
 
@@ -131,7 +131,12 @@ pub fn tree_builder(tokens: &[String], original_query: String) -> Option<Query>{
 
                     let expression: SelectExpression = SelectExpression{condition: condition, logical: current_logical_operator};
 
-                    all_expressions.push(expression);
+                    //all_expressions.push(expression);
+
+                    match &mut all_expressions {
+                        EitherOrType::Select(vec) => vec.push(expression),
+                        _ => unreachable!("expected Select variant while parsing SELECT expressions"),
+                    }
                 }
 
             }
